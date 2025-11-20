@@ -13,7 +13,9 @@
             <InputText placeholder="Email" type="email" />
             <InputText placeholder="Password" type="password" />
             <Button label="Login"></Button>
-            <Button label="Sign Up" severity="secondary"></Button>
+            <router-link to="signup">
+              <Button label="Sign Up" severity="secondary" fluid></Button>
+            </router-link>
           </div>
         </template>
       </Card>

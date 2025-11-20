@@ -1,5 +1,8 @@
 <script setup>
+import { ref } from 'vue'
+import { watch } from 'vue'
 import { computed, reactive } from 'vue'
+import z from 'zod'
 
 const form = reactive({
   email: '',
@@ -10,10 +13,32 @@ const form = reactive({
   organization: '',
 })
 
-const formConfirm = reactive({
-  email: '',
-  password: '',
+const errors = ref({})
+const formSchema = z.object({
+  email: z.email(),
+  firstName: z.string().min(3, 'Min 3 characters'),
+  lastName: z.string().min(3, 'Min 3 characters'),
+  password: z.string().min(8, 'Min 8 characters'),
+  organization: z.string(),
 })
+
+const validateForm = () => {
+  try {
+    formSchema.parse(form)
+    errors.value = {}
+    return true
+  } catch (error) {
+    errors.value = {}
+    error.issues.forEach((err) => {
+      errors.value[err.path[0]] = err.message
+    })
+    return false
+  }
+}
+
+const signUp = () => {
+  validateForm()
+}
 
 const isOrganizationEnabled = computed(() => {
   return form.role === 'organizer'
@@ -30,37 +55,45 @@ const isOrganizationEnabled = computed(() => {
 
         <template #content>
           <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <FloatLabel variant="on">
-              <InputText id="first-name" v-model="form.firstName" fluid />
-              <label for="first-name">First Name</label>
-            </FloatLabel>
-            <FloatLabel variant="on">
-              <InputText id="last-name" v-model="form.lastName" fluid />
-              <label for="last-name">Last Name</label>
-            </FloatLabel>
+            <div>
+              <FloatLabel variant="on">
+                <InputText id="first-name" v-model="form.firstName" fluid />
+                <label for="first-name">First Name</label>
+              </FloatLabel>
+              <Message v-if="errors.firstName" severity="error" size="small" variant="simple">{{
+                errors.firstName
+              }}</Message>
+            </div>
 
-            <FloatLabel variant="on">
-              <InputText id="email" v-model="form.email" type="email" fluid />
-              <label for="email">Email</label>
-            </FloatLabel>
-            <FloatLabel variant="on">
-              <InputText id="confirm-email" v-model="formConfirm.email" type="email" fluid />
-              <label for="confirm-email">Confirm email</label>
-            </FloatLabel>
+            <div>
+              <FloatLabel variant="on">
+                <InputText id="last-name" v-model="form.lastName" fluid />
+                <label for="last-name">Last Name</label>
+              </FloatLabel>
+              <Message v-if="errors.lastName" severity="error" size="small" variant="simple">{{
+                errors.lastName
+              }}</Message>
+            </div>
 
-            <FloatLabel variant="on">
-              <InputText id="password" v-model="form.password" type="password" fluid />
-              <label for="password">Password</label>
-            </FloatLabel>
-            <FloatLabel variant="on">
-              <InputText
-                id="confirm-password"
-                v-model="formConfirm.password"
-                type="password"
-                fluid
-              />
-              <label for="confirm-passwod">Confirm password</label>
-            </FloatLabel>
+            <div>
+              <FloatLabel variant="on">
+                <InputText id="email" v-model="form.email" type="email" fluid />
+                <label for="email">Email</label>
+              </FloatLabel>
+              <Message v-if="errors.email" severity="error" size="small" variant="simple">{{
+                errors.email
+              }}</Message>
+            </div>
+
+            <div>
+              <FloatLabel variant="on">
+                <InputText id="password" v-model="form.password" type="password" fluid />
+                <label for="password">Password</label>
+              </FloatLabel>
+              <Message v-if="errors.password" severity="error" size="small" variant="simple">{{
+                errors.password
+              }}</Message>
+            </div>
 
             <RadioButtonGroup name="role" v-model="form.role" class="gap-4">
               <h2 class="flex items-center">Role</h2>
@@ -75,18 +108,25 @@ const isOrganizationEnabled = computed(() => {
               </div>
             </RadioButtonGroup>
 
-            <FloatLabel variant="on">
-              <InputText
-                :disabled="!isOrganizationEnabled"
-                id="organization"
-                v-model="form.organization"
-                fluid
-              />
-              <label for="organization">Organization</label>
-            </FloatLabel>
+            <div>
+              <FloatLabel variant="on">
+                <InputText
+                  :disabled="!isOrganizationEnabled"
+                  id="organization"
+                  v-model="form.organization"
+                  fluid
+                />
+                <label for="organization">Organization</label>
+              </FloatLabel>
+              <Message v-if="errors.organization" severity="error" size="small" variant="simple">{{
+                errors.organization
+              }}</Message>
+            </div>
 
-            <Button label="Login" severity="secondary"></Button>
-            <Button label="Sign Up"></Button>
+            <router-link to="login">
+              <Button label="Login" fluid severity="secondary"></Button>
+            </router-link>
+            <Button label="Sign Up" @click="signUp"></Button>
           </div>
         </template>
       </Card>

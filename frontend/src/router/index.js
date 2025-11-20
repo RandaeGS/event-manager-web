@@ -12,14 +12,17 @@ const router = createRouter({
       component: AppLayout,
       children: [
         {
+          name: 'home',
           path: '/',
           component: HomeView,
         },
         {
+          name: 'login',
           path: '/login',
           component: LoginView,
         },
         {
+          name: 'signup',
           path: '/signup',
           component: SignUp,
         },

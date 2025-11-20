@@ -12,8 +12,12 @@
     <div class="items-center">
       <Button label="Manage Events" severity="contrast" variant="text"></Button>
       <Button label="Tickets" severity="contrast" variant="text"></Button>
-      <Button label="Sign Up" severity="contrast" variant="text"></Button>
-      <Button label="Login" severity="primary" variant="text"></Button>
+      <router-link to="signup">
+        <Button label="Sign Up" severity="contrast" variant="text"></Button>
+      </router-link>
+      <router-link to="login">
+        <Button label="Login" severity="primary" variant="text"></Button>
+      </router-link>
     </div>
   </div>
 </template>
