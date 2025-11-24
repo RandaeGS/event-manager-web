@@ -1,3 +1,10 @@
 quarkus:
   http:
     port: 8070
+
+smallrye:
+  jwt:
+    sign:
+      key:
+        location:
+          ../jwt/privateKey.pem

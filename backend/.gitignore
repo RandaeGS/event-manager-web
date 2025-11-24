@@ -39,3 +39,6 @@ nb-configuration.xml
 /.quarkus/cli/plugins/
 # TLS Certificates
 .certs/
+/jwt/privateKey.pem
+/jwt/publicKey.pem
+/jwt/rsaPrivateKey.pem
