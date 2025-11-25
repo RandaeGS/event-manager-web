@@ -4,6 +4,9 @@ quarkus:
 
 smallrye:
   jwt:
+    new-token:
+      issuer: eventman
+      audience: backend
     sign:
       key:
         location:

@@ -7,3 +7,9 @@
       db-version: 17
     flyway:
       migrate-at-start: true
+  mp:
+    jwt:
+      verify:
+        issuer: eventman
+        publickey:
+          location: ../jwt/publicKey.pem
