@@ -1,8 +1,11 @@
 <script setup>
+import http from '@/plugins/axios'
+import { useToast } from 'primevue'
 import { ref } from 'vue'
-import { watch } from 'vue'
 import { computed, reactive } from 'vue'
 import z from 'zod'
+
+const toast = useToast()
 
 const form = reactive({
   email: '',
@@ -36,8 +39,15 @@ const validateForm = () => {
   }
 }
 
-const signUp = () => {
-  validateForm()
+const signUp = async () => {
+  if (!validateForm()) return
+
+  try {
+    await http.post('auth/signUp', form)
+  } catch (error) {
+    toast.add({ severity: 'error', summary: 'Error', detail: 'Error during signup' })
+    console.error(error)
+  }
 }
 
 const isOrganizationEnabled = computed(() => {

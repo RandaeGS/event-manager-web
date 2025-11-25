@@ -1,12 +1,24 @@
 "%dev":
   quarkus:
+    hibernate-orm:
+      database:
+        default-schema: eventman
     http:
       port: 8080
+      cors:
+        origins: /.*/
+        enabled: true
     datasource:
       db-kind: postgresql
       db-version: 17
+      username: postgres
+      password: postgres
     flyway:
+      active: true
       migrate-at-start: true
+      schemas: ["eventman"]
+      table: flyway_quarkus_history
+      locations: db/migrations
   mp:
     jwt:
       verify:

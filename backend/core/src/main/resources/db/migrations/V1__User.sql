@@ -1,7 +1,13 @@
 CREATE TABLE roles (
                        id serial4 PRIMARY KEY,
-                       name varchar(40) NOT NULL UNIQUE,
-)
+                       name varchar(40) NOT NULL UNIQUE
+);
+
+insert into roles (name)
+values ('ATTENDEE');
+
+insert into roles (name)
+values ('ORGANIZER');
 
 CREATE TABLE users (
                        id serial4 PRIMARY KEY,
@@ -9,6 +15,6 @@ CREATE TABLE users (
                        last_name varchar(50) NOT NULL,
                        email varchar(40) NOT NULL UNIQUE,
                        password varchar(20) NOT NULL,
-                       user_role FOREIGN KEY REFERENCES roles (id)
-)
+                       user_role integer REFERENCES roles (id)
+);
 
