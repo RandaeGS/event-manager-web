@@ -31,7 +31,7 @@ public class User extends PanacheEntityBase {
     @Column(unique = true)
     public String email;
 
-    @Length(min = 8, message = "Password is too short", max = 20)
+    @Length(min = 8, message = "Password is too short")
     @NotNull(message = "Password cant be empty")
     public String password;
 
