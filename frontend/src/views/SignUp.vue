@@ -1,11 +1,24 @@
 <script setup>
 import http from '@/plugins/axios'
+import { useAuthStore } from '@/stores/authStore'
 import { useToast } from 'primevue'
 import { ref } from 'vue'
 import { computed, reactive } from 'vue'
+import { useRouter } from 'vue-router'
 import z from 'zod'
 
 const toast = useToast()
+const authStore = useAuthStore()
+const router = useRouter()
+
+const emptyForm = reactive({
+  email: '',
+  password: '',
+  firstName: '',
+  lastName: '',
+  role: 'attendee',
+  organization: '',
+})
 
 const form = reactive({
   email: '',
@@ -44,6 +57,8 @@ const signUp = async () => {
 
   try {
     await http.post('auth/signUp', form)
+    authStore.login(form.email, form.password)
+    router.push('/')
   } catch (error) {
     toast.add({ severity: 'error', summary: 'Error', detail: 'Error during signup' })
     console.error(error)
