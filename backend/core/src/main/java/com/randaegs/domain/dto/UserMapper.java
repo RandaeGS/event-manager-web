@@ -11,5 +11,5 @@ public interface UserMapper {
     @Mapping(target = "username", expression = "java(user.firstName + ' ' + user.lastName)")
     UserJwtDto userToUserJwtDto(User user);
 
-    SignUpResponseDto userToSignUpResponseDto(UserJwtDto userJwtDto, String jwt);
+    AuthResponseDto userToAuthResponseDto(UserJwtDto userJwtDto, String jwt);
 }

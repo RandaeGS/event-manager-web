@@ -46,4 +46,9 @@ public class User extends PanacheEntityBase {
 
     public User() {
     }
+
+    public static User findByEmail(String email) {
+        return find("lower(email)", email.toLowerCase()).firstResult();
+    }
+
 }

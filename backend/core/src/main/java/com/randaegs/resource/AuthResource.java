@@ -1,5 +1,6 @@
 package com.randaegs.resource;
 
+import com.randaegs.domain.dto.LoginRequestDto;
 import com.randaegs.domain.entity.User;
 import com.randaegs.service.AuthService;
 import jakarta.inject.Inject;
@@ -23,5 +24,12 @@ public class AuthResource {
     @Transactional
     public Response signUp(@Valid @NotNull User user) {
         return authService.signUp(user);
+    }
+
+    @Path("login")
+    @POST
+    @Transactional
+    public Response login(@Valid @NotNull LoginRequestDto loginRequestDto) {
+        return authService.login(loginRequestDto);
     }
 }
