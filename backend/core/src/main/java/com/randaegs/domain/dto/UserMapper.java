@@ -10,4 +10,6 @@ public interface UserMapper {
     @Mapping(target = "role", source = "userRole.name")
     @Mapping(target = "username", expression = "java(user.firstName + ' ' + user.lastName)")
     UserJwtDto userToUserJwtDto(User user);
+
+    SignUpResponseDto userToSignUpResponseDto(UserJwtDto userJwtDto, String jwt);
 }

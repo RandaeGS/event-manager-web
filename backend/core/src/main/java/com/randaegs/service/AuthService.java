@@ -1,5 +1,7 @@
 package com.randaegs.service;
 
+import com.randaegs.domain.dto.SignUpResponseDto;
+import com.randaegs.domain.dto.UserJwtDto;
 import com.randaegs.domain.dto.UserMapper;
 import com.randaegs.domain.entity.User;
 import com.randaegs.domain.entity.UserRole;
@@ -33,12 +35,18 @@ public class AuthService {
             return Response.status(Response.Status.BAD_REQUEST).entity("Role not found").build();
         }
 
-        user.userRole = UserRole.findByName(user.role);
+        user.userRole = role;
         user.password = BCrypt.hashpw(user.password, BCrypt.gensalt());
+        try {
+            user.persist();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
 
-        String jwt = jwtClient.generateToken(userMapper.userToUserJwtDto(user));
-        log.info("JWT: {}", jwt);
-        user.persist();
-        return Response.status(Response.Status.CREATED).entity(user).build();
+        UserJwtDto userJwtDto = userMapper.userToUserJwtDto(user);
+        String jwt = jwtClient.generateToken(userJwtDto);
+        SignUpResponseDto responseDto = userMapper.userToSignUpResponseDto(userJwtDto, jwt);
+        log.info("User created");
+        return Response.status(Response.Status.CREATED).entity(responseDto).build();
     }
 }
