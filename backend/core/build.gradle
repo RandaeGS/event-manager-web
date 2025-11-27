@@ -21,6 +21,9 @@ dependencies {
     implementation 'io.quarkus:quarkus-hibernate-envers'
     implementation 'io.quarkus:quarkus-flyway'
     implementation 'io.quarkus:quarkus-hibernate-orm-panache'
+    implementation 'io.quarkus:quarkus-rest-client-jackson'
+    implementation 'org.mapstruct:mapstruct:1.6.3'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'
 }
