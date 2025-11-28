@@ -15,11 +15,12 @@ export const useAuthStore = defineStore('auth', () => {
         email: email,
         password: password,
       })
-      console.log(response.data)
       user.value = response.data
     } catch (error) {
       console.error(error)
+      return false
     }
+    return true
   }
 
   return { user, login }

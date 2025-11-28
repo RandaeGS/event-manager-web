@@ -11,15 +11,6 @@ const toast = useToast()
 const authStore = useAuthStore()
 const router = useRouter()
 
-const emptyForm = reactive({
-  email: '',
-  password: '',
-  firstName: '',
-  lastName: '',
-  role: 'attendee',
-  organization: '',
-})
-
 const form = reactive({
   email: '',
   password: '',
@@ -57,10 +48,13 @@ const signUp = async () => {
 
   try {
     await http.post('auth/signUp', form)
-    authStore.login(form.email, form.password)
-    router.push('/')
+    if (await authStore.login(form.email, form.password)) {
+      router.push('/')
+    } else {
+      toast.add({ severity: 'error', summary: 'Error', detail: 'Error during signup', life: 3000 })
+    }
   } catch (error) {
-    toast.add({ severity: 'error', summary: 'Error', detail: 'Error during signup' })
+    toast.add({ severity: 'error', summary: 'Error', detail: 'Error during signup', life: 3000 })
     console.error(error)
   }
 }
